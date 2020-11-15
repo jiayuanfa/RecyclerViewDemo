@@ -8,10 +8,17 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recyclerviewdemo.R
 
-class HomeAdapter(private val mContext: Context, private val list: List<String>) : RecyclerView.Adapter<HomeAdapter.MyViewHolder>() {
+class HomeAdapter(private val mContext: Context, private val list: List<String>) : RecyclerView.Adapter<HomeAdapter.MyViewHolder>(),
+    View.OnClickListener, View.OnLongClickListener {
+
+    private var mListener: OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        return MyViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_home, parent, false))
+
+        val view = LayoutInflater.from(mContext).inflate(R.layout.item_home, parent, false)
+        view.setOnClickListener(this)
+        view.setOnLongClickListener(this)
+        return MyViewHolder(view)
     }
 
     override fun getItemCount(): Int {
@@ -20,6 +27,7 @@ class HomeAdapter(private val mContext: Context, private val list: List<String>)
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.tv!!.text = list[position]
+        holder.itemView.tag = position
     }
 
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -28,5 +36,18 @@ class HomeAdapter(private val mContext: Context, private val list: List<String>)
         init {
             tv = view.findViewById(R.id.textView)
         }
+    }
+
+    fun setItemListener(listener: OnItemClickListener) {
+        mListener = listener
+    }
+
+    override fun onClick(p0: View?) {
+        mListener?.onItemClick(p0!!, p0.tag as Int)
+    }
+
+    override fun onLongClick(p0: View?): Boolean {
+        mListener?.onItemLongClick(p0!!, p0.tag as Int)
+        return true
     }
 }
