@@ -95,7 +95,7 @@ class DividerItemDecoration(context: Context, orientation: Int) : RecyclerView.I
      */
     private fun drawVertical(c: Canvas, parent: RecyclerView) {
         // 左边: 从最左边开始 0
-        val left = parent.paddingLeft + 40
+        val left = parent.paddingLeft
 
         // 右边：宽度减去内边距 100-0 = 100
         val right = parent.width - parent.paddingRight
